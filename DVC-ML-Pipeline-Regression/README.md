@@ -1,16 +1,5 @@
 # DVC ML Pipeline — Regression
 
-A regression counterpart to [MuthuPalaniappan925/DVC-ML-Pipeline](https://github.com/MuthuPalaniappan925/DVC-ML-Pipeline),
-which builds a classification pipeline on the Breast Cancer Wisconsin dataset.
-This version swaps in the scikit-learn **Diabetes dataset** (predicting a
-quantitative measure of disease progression) and a `RandomForestRegressor`,
-keeping the same 5-stage DVC pipeline structure:
-
-1. **data_ingestion** — loads `sklearn.datasets.load_diabetes` -> `data/raw/data.csv`
-2. **data_preprocessing** — cleans column names, drops duplicates, fills missing values -> `data/processed/data.csv`
-3. **feature_engineering** — train/test split + `StandardScaler` -> `data/features/{train,test}.csv`
-4. **model_building** — trains a `RandomForestRegressor` -> `model.pkl`
-5. **model_evaluation** — computes regression metrics -> `metrics.json`
 
 ## Results
 
