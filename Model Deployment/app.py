@@ -41,3 +41,15 @@ def home():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.post("/predict")
+def predict(data: HouseFeatures):
+
+    prediction = model.predict([data.features])[0]
+
+    return {
+        "predicted_price": round(float(prediction), 4),
+        "unit": "100,000 USD",
+        "features_used": FEATURE_NAMES
+    }
