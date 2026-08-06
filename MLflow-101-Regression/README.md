@@ -1,18 +1,5 @@
 # MLflow-101-Regression
 
-Regression version of [MuthuPalaniappan925/MLflow-101](https://github.com/MuthuPalaniappan925/MLflow-101).
-The original repo does MLflow experiment tracking (local + DagsHub) on the
-Breast Cancer classification dataset. This does the same thing but for a
-regression problem.
-
-**Note on the dataset:** the assignment asked for the Boston Housing dataset,
-but `load_boston()` was removed from scikit-learn (1.2+) because it embeds a
-feature derived from racial demographics that's been widely criticized. Used
-`fetch_california_housing()` instead — it's sklearn's own recommended
-replacement and is still a housing-price regression problem with the same
-shape (numeric features -> continuous price target).
-
-## What's here
 
 - `ml_flow_regression.ipynb` — trains 3 models, tracks experiments on a local
   MLflow server (`http://127.0.0.1:5000`), picks the best one by R2, registers
