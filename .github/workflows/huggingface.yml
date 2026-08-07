@@ -1,0 +1,107 @@
+name: Deploy Model To Hugging Face
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "Auto Deploy Model/**"
+      - ".github/workflows/huggingface.yml"
+  push:
+    branches: [main]
+    paths:
+      - "Auto Deploy Model/**"
+      - ".github/workflows/huggingface.yml"
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # runs on every push and pull request, just simple checks
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Auto Deploy Model"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+          cache-dependency-path: "Auto Deploy Model/requirements.txt"
+
+      - name: install packages
+        run: pip install -r requirements.txt
+
+      - name: run tests
+        run: pytest tests/ -v
+
+  # runs the real pipeline, prepare data then train then check quality
+  train_and_evaluate:
+    needs: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Auto Deploy Model"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+          cache-dependency-path: "Auto Deploy Model/requirements.txt"
+
+      - name: install packages
+        run: pip install -r requirements.txt
+
+      - name: prepare data
+        run: python src/prepare.py
+
+      - name: train model
+        run: python src/train.py
+
+      - name: check model quality (r2 gate)
+        run: python src/evaluate.py
+
+      - name: save model and metrics as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-and-metrics
+          path: |
+            Auto Deploy Model/model/
+            Auto Deploy Model/metrics.json
+
+  # only runs when we push to main and the model passed the quality gate
+  deploy_to_huggingface:
+    needs: train_and_evaluate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Auto Deploy Model"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+          cache-dependency-path: "Auto Deploy Model/requirements.txt"
+
+      - name: install packages
+        run: pip install -r requirements.txt
+
+      # training again here so the model we push is fresh from this exact commit
+      - name: prepare, train, check again
+        run: |
+          python src/prepare.py
+          python src/train.py
+          python src/evaluate.py
+
+      - name: push model to hugging face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_REPO_ID: ${{ vars.HF_REPO_ID }}
+        run: python src/register.py
