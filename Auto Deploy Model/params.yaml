@@ -1,0 +1,12 @@
+prepare:
+  test_size: 0.2
+  random_state: 42
+
+train:
+  n_estimators: 300
+  max_depth: 6
+  learning_rate: 0.1
+  random_state: 42
+
+evaluate:
+  min_r2: 0.75   ##if r2 score is below this, pipeline stops and nothing gets deployed
