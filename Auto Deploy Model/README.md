@@ -1,6 +1,6 @@
 # Auto Deploy Model
 
-This is the last part of the assignment chain. Same house price model from
+Same house price model from
 my mlflow and docker labs, but now it trains and deploys by itself using
 github actions. Every time i push a change to this folder, it retrains the
 model, checks if it is good enough, and if it is, sends it straight to my
