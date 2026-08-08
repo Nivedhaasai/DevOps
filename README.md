@@ -1,8 +1,6 @@
 # DevOps
 
-This is where i am keeping all my lab assignments for my DevOps and MLOps
-course. Each folder is a separate lab, done at a different point in the
-course, but from lab 2 onwards they all build on the same house price
+Each folder is a separate lab, from lab 2 onwards they all build on the same house price
 model, so the whole repo ends up telling one story: linux basics first,
 then version the data, then track experiments, then serve the model, then
 automate the whole thing.
@@ -45,13 +43,7 @@ automatically. The workflow file itself lives at the repo root
 (`.github/workflows/huggingface.yml`) since that is where github actions
 looks for it, but it is scoped to only run when this folder changes.
 
-## The model, if you are wondering why it keeps coming back
 
-Labs 3 through 5 all use the same problem, predicting california housing
-prices from the built in scikit-learn dataset, mostly with an xgboost
-regressor. Reusing the same model across labs was intentional, it means
-each lab actually builds on the last one instead of starting over, which
-felt closer to how a real project would grow.
 
 ## A couple of honest notes
 
