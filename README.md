@@ -45,13 +45,4 @@ looks for it, but it is scoped to only run when this folder changes.
 
 
 
-## A couple of honest notes
-
-- My github account hit a billing issue partway through this course,
-  which blocks github actions from running on any of my repos until it
-  gets sorted out with support. Where that affects a specific lab, i have
-  said so in that lab's own readme, along with what i tested manually
-  instead while waiting on it.
-- Each lab folder has its own readme with the actual setup steps, results,
-  and screenshots where the assignment asked for them. This top level one
-  is just here to tie the whole repo together.
+- Each lab folder has its own readme with the actual setup steps and results
